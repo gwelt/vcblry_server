@@ -23,22 +23,25 @@ exports.getAllChallenges = function() {
   return new Promise(function(resolve, reject) {
     var examples = {};
     examples['application/json'] = [ {
-  "id" : "id",
+  "id" : "Tiere / animals",
   "list" : [ {
-    "A" : "A",
-    "B" : "B"
+    "A" : "Hund",
+    "B" : "dog"
   }, {
-    "A" : "A",
-    "B" : "B"
+    "A" : "Katze",
+    "B" : "cat"
+  }, {
+    "A" : "Maus",
+    "B" : "mouse"
   } ]
 }, {
-  "id" : "id",
+  "id" : "Fahrzeuge / vehicles",
   "list" : [ {
-    "A" : "A",
-    "B" : "B"
+    "A" : "Auto",
+    "B" : "car"
   }, {
-    "A" : "A",
-    "B" : "B"
+    "A" : "Flugzeug",
+    "B" : "plane"
   } ]
 } ];
     if (Object.keys(examples).length > 0) {
