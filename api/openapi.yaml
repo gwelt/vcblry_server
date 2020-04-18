@@ -1,0 +1,71 @@
+openapi: 3.0.1
+info:
+  title: VKBLRY* Challenges
+  version: 0.0.1
+servers:
+- url: http://localhost:3000
+paths:
+  /:
+    get:
+      tags:
+      - server
+      summary: Gets list of all Challgenges.
+      operationId: getAllChallenges
+      responses:
+        "200":
+          description: returns all Challgenges
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Challenge'
+                x-content-type: application/json
+      x-swagger-router-controller: Server
+    post:
+      tags:
+      - server
+      summary: Adds a Challenge to the list.
+      operationId: addChallenge
+      requestBody:
+        description: Challenge object that should be added
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Challenge'
+        required: true
+      responses:
+        "201":
+          description: Created
+        "405":
+          description: Invalid input
+          content: {}
+      x-swagger-router-controller: Server
+components:
+  schemas:
+    Challenge:
+      type: object
+      properties:
+        id:
+          type: string
+        list:
+          type: array
+          items:
+            $ref: '#/components/schemas/Word'
+      example:
+        id: id
+        list:
+        - A: Hund
+          B: dog
+        - A: Katze
+          B: cat
+    Word:
+      type: object
+      properties:
+        A:
+          type: string
+        B:
+          type: string
+      example:
+        A: Maus
+        B: mouse
