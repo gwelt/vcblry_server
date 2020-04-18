@@ -1,5 +1,5 @@
 'use strict';
-
+var list_of_Challenges = [];
 
 /**
  * Adds a Challenge to the list.
@@ -8,6 +8,8 @@
  * no response value expected for this operation
  **/
 exports.addChallenge = function(body) {
+  //console.log(body);
+  list_of_Challenges.push(body);
   return new Promise(function(resolve, reject) {
     resolve();
   });
@@ -20,6 +22,7 @@ exports.addChallenge = function(body) {
  * returns List
  **/
 exports.getAllChallenges = function() {
+  //console.log('======================\n'+JSON.stringify(list_of_Challenges));
   return new Promise(function(resolve, reject) {
     var examples = {};
     examples['application/json'] = [ {
@@ -44,10 +47,10 @@ exports.getAllChallenges = function() {
     "B" : "plane"
   } ]
 } ];
-    if (Object.keys(examples).length > 0) {
+    if ((Object.keys(examples).length > 0)&&(list_of_Challenges.length<1)) {
       resolve(examples[Object.keys(examples)[0]]);
     } else {
-      resolve();
+      resolve(list_of_Challenges);
     }
   });
 }
