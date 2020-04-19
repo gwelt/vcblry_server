@@ -24,12 +24,8 @@ module.exports.getAllChallenges = function getAllChallenges (req, res, next) {
     });
 };
 
-module.exports.serveIndexHTML = function serveIndexHTML (req, res, next) {
-  res.sendFile('index.html',{root:path.join(__dirname,'../public')});
-};
-
 module.exports.servePublicFile = function servePublicFile (req, res, next, publicfilename) {
-  res.sendFile(publicfilename,{root:path.join(__dirname,'../public')},
+  res.sendFile(publicfilename||'index.html',{root:path.join(__dirname,'../public')},
       (err) => {if (err) {res.status(err.status).end();next();} else {}}
     );
 };

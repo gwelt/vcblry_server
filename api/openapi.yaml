@@ -46,7 +46,7 @@ paths:
       tags:
       - server
       summary: Get a user interface for VCBLRY*-trainer (index.html), which uses this API.
-      operationId: serveIndexHTML
+      operationId: servePublicFile
       responses:
         "200":
           description: returns index.html
