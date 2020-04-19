@@ -54,15 +54,3 @@ exports.getAllChallenges = function() {
     }
   });
 }
-
-
-/**
- * Gets index.html
- *
- * returns String
- **/
-exports.startHTML = function() {
-  return new Promise(function(resolve, reject) {
-      resolve('Hello World!');
-  });
-}

@@ -2,6 +2,7 @@
 
 var utils = require('../utils/writer.js');
 var Server = require('../service/ServerService');
+var path=require('path');
 
 module.exports.addChallenge = function addChallenge (req, res, next, body) {
   Server.addChallenge(body)
@@ -23,14 +24,10 @@ module.exports.getAllChallenges = function getAllChallenges (req, res, next) {
     });
 };
 
-module.exports.startHTML = function startHTML (req, res, next) {
-  Server.startHTML()    
-    .then(function (response) {
-      res.writeHead(200, {'Content-Type': 'text/html'});
-      res.end(response);
-    })
-    .catch(function (response) {
-      res.writeHead(404, {'Content-Type': 'text/html'});
-      res.end(response);
-    });
+module.exports.serveIndexHTML = function serveIndexHTML (req, res, next) {
+  res.sendFile('index.html',{root:path.join(__dirname,'../public')});
+};
+
+module.exports.servePublicFile = function servePublicFile (req, res, next, publicfilename) {
+  res.sendFile(publicfilename,{root:path.join(__dirname,'../public')});
 };

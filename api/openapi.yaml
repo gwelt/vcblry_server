@@ -9,7 +9,7 @@ paths:
     get:
       tags:
       - server
-      summary: Gets list of all Challgenges.
+      summary: Get list of all Challgenges.
       operationId: getAllChallenges
       responses:
         "200":
@@ -25,10 +25,10 @@ paths:
     post:
       tags:
       - server
-      summary: Adds a Challenge to the list.
+      summary: Add a Challenge to the list.
       operationId: addChallenge
       requestBody:
-        description: Challenge object that should be added
+        description: contains Challenge object that should be added
         content:
           application/json:
             schema:
@@ -45,8 +45,8 @@ paths:
     get:
       tags:
       - server
-      summary: Gets index.html
-      operationId: startHTML
+      summary: Get a user interface for VCBLRY*-trainer (index.html), which uses this API.
+      operationId: serveIndexHTML
       responses:
         "200":
           description: returns index.html
@@ -54,6 +54,32 @@ paths:
             text/html:
               schema:
                 type: string
+        "404":
+          description: not found
+          content: {}
+      x-swagger-router-controller: Server
+  /{publicfilename}:
+    get:
+      tags:
+      - server
+      summary: Get files from public directory.
+      operationId: servePublicFile
+      parameters:
+        - in: path
+          name: publicfilename
+          schema:
+            type: string
+          required: true
+      responses:
+        "200":
+          description: returns public file
+          content:
+            text/html:
+              schema:
+                type: string
+        "404":
+          description: not found
+          content: {}
       x-swagger-router-controller: Server
 components:
   schemas:
