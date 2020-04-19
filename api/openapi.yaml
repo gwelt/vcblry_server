@@ -5,7 +5,7 @@ info:
 servers:
 - url: http://localhost:3000
 paths:
-  /:
+  /api:
     get:
       tags:
       - server
@@ -40,6 +40,20 @@ paths:
         "405":
           description: Invalid input
           content: {}
+      x-swagger-router-controller: Server
+  /:
+    get:
+      tags:
+      - server
+      summary: Gets index.html
+      operationId: startHTML
+      responses:
+        "200":
+          description: returns index.html
+          content:
+            text/html:
+              schema:
+                type: string
       x-swagger-router-controller: Server
 components:
   schemas:

@@ -22,3 +22,15 @@ module.exports.getAllChallenges = function getAllChallenges (req, res, next) {
       utils.writeJson(res, response);
     });
 };
+
+module.exports.startHTML = function startHTML (req, res, next) {
+  Server.startHTML()    
+    .then(function (response) {
+      res.writeHead(200, {'Content-Type': 'text/html'});
+      res.end(response);
+    })
+    .catch(function (response) {
+      res.writeHead(404, {'Content-Type': 'text/html'});
+      res.end(response);
+    });
+};
