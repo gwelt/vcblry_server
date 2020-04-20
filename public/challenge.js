@@ -1,5 +1,5 @@
-function Challenge (list) {
-	this.id = 0;
+function Challenge (list,id) {
+	this.id = id||0;
 	try {this.list=JSON.parse(list)} catch (e) {this.list=[]}
 	this.not_answered = this.list.map(function(e) {return new Word(e.A,e.B)});
 	this.lookups = [];
@@ -27,8 +27,8 @@ function Stats (c) {
 	return this;
 }
 
-function create_new_challenge(list) {
-	return new Challenge(list);
+function create_new_challenge(list,id) {
+	return new Challenge(list,id);
 }
 
 Challenge.prototype.get_challenge = function () {

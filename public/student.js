@@ -1,25 +1,55 @@
-var challengeObject=undefined;
-function server_create_new_challenge(list) {challengeObject=create_new_challenge(list)}
-function server_get_question(reverse) {let r=challengeObject.get_question(reverse,config.mc_count); return JSON.parse(r)}
-function server_check(word) {return challengeObject.check(word)}
-function server_lookup(A) {return JSON.parse(challengeObject.lookup(A))}
-function server_get_stats() {return JSON.parse(challengeObject.get_stats())}
-function server_get_challenge() {let r=challengeObject.get_challenge(); return r}
+var listOfChallenges=[];
+var currentChallenge=undefined;
+function server_create_new_challenge(list,id) {currentChallenge=create_new_challenge(list,id); return currentChallenge}
+function server_get_question(reverse) {let r=currentChallenge.get_question(reverse,config.mc_count); return JSON.parse(r)}
+function server_check(word) {return currentChallenge.check(word)}
+function server_lookup(A) {return JSON.parse(currentChallenge.lookup(A))}
+function server_get_stats() {return JSON.parse(currentChallenge.get_stats())}
+function server_get_challenge() {let r=currentChallenge.get_challenge(); return r}
 
 var config = new Configuration();
 function Configuration() {
-	this.list = undefined;
+	this.list = '';
 	this.mc = false; // mode: multiple-choice
 	this.mc_count = 3; // number of options shown with multiple-choice (min 3, max 8, default 3) (will also apply for check if mode is not mc)
 	this.rrand = true; // ask in random order (own language<>foreign language)
 	this.reverse = false; // always ask in reverse order (own language<>foreign language)
-	this.delay_ok = 250; // delay if selected the correct answer, before switching to next question
+	this.delay_ok = 0; // delay if selected the correct answer, before switching to next question
 	this.delay_error = 250; // delay if selected the wrong answer, before showing the correct answer
 }
 
+function go() {
+	// get list of Challenges from API
+	callAPI('GET',window.location.href+'api',{},(r)=>{parseListOfChallenges(r);start()});
+	//start();
+}
+function callAPI(method,apicall,reqobj,callback) {
+	if (!(apicall).startsWith('http')) {console.log('API-call to '+apicall+' aborted');callback();return true;}
+	var t=stopwatch();
+	var req = new XMLHttpRequest();
+	req.onreadystatechange = function() {if (this.readyState == 4) {
+		console.log(method+' '+apicall+': '+stopwatch(t)+'ms'); 
+		if (this.status<500) {callback(this.responseText)} else {callback()}}
+	};
+	req.open(method,apicall,true);
+	req.setRequestHeader("Content-Type","application/json;charset=UTF-8");
+	req.send(JSON.stringify(reqobj));
+}
+function stopwatch(time) {if (typeof time != 'undefined') {return new Date()-time} else {return new Date()}}
+function parseListOfChallenges(locJSON) {
+	if (IsJsonString(locJSON)) {
+		listOfChallenges=[];
+		o=JSON.parse(locJSON); 
+		o.forEach((i)=>{
+			listOfChallenges.push(server_create_new_challenge(JSON.stringify(i.list),i.id));
+			console.log(i.id,i.list);
+		})
+	}
+}
+
 function start(list,mc,mc_count,rrand,reverse,delay_ok,delay_error) {
-	if (list!==undefined) {config.list=list}
-	if (mc!==undefined) {config.mchallengeObject=mc}
+	if (list!==undefined) {config.list=list} else {config.list=currentChallenge?JSON.stringify(currentChallenge.list):'Hund = dog \nKatze = cat \nMaus = mouse'}
+	if (mc!==undefined) {config.mc=mc}
 	if (mc_count!==undefined) {config.mc_count=mc_count}
 	if (rrand!==undefined) {config.rrand=rrand}
 	if (reverse!==undefined) {config.reverse=reverse}
