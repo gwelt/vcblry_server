@@ -93,13 +93,3 @@ Challenge.prototype.lookup = function (A) {
 function shuffle_list(list) {
 	return list.sort(function() {return Math.random() - 0.5});
 }
-
-function old_shuffle_list(list) {
-  for (var i=0; i<list.length; i++) {
-    var x=list[i];
-    var r=Math.floor(Math.random()*list.length);
-    list[i]=list[r];
-    list[r]=x;
-  };
-  return list;
-}

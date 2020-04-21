@@ -39,12 +39,25 @@ function stopwatch(time) {if (typeof time != 'undefined') {return new Date()-tim
 function parseListOfChallenges(locJSON) {
 	if (IsJsonString(locJSON)) {
 		listOfChallenges=[];
-		o=JSON.parse(locJSON); 
-		o.forEach((i)=>{
+		JSON.parse(locJSON).forEach((i)=>{
 			listOfChallenges.push(server_create_new_challenge(JSON.stringify(i.list),i.id));
 			console.log(i.id,i.list);
 		})
 	}
+}
+function createOptionsList(listOfChallenges) {
+	let sel = document.createElement("select");
+	sel.id='select_list';
+	sel.onchange=()=>{sel.options[sel.selectedIndex].fkt()}
+	listOfChallenges.forEach((le)=>{
+		let opt = document.createElement("option");
+		opt.value=le.id;
+		opt.text=le.id;
+		opt.selected=(le.id==currentChallenge.id);
+		opt.fkt=()=>{server_create_new_challenge(JSON.stringify(le.list),le.id);start()};
+		sel.appendChild(opt);		
+	});
+	return sel;
 }
 
 function start(list,mc,mc_count,rrand,reverse,delay_ok,delay_error) {
@@ -66,6 +79,7 @@ function start(list,mc,mc_count,rrand,reverse,delay_ok,delay_error) {
 	ta.value=config.list;
 	e.innerHTML='<div class=label><span style=font-weight:bold>VCBLRY*</span> trainer input [ <a href=# onclick=open_upload_dialog()>import</a> ]</div>';
 	e.innerHTML+='<input id=import hidden type=file accept="application/json,text/plain" onchange="openFile(event,'+((v)=>{ta.value=v;updateVocabularyList();})+')">';
+	if (listOfChallenges.length>0) {e.appendChild(createOptionsList(listOfChallenges))}
 	let timeout=undefined;
 	ta.onkeyup=function(){
 		clearTimeout(timeout);
