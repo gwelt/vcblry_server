@@ -16,11 +16,12 @@ function Configuration() {
 	this.reverse = false; // always ask in reverse order (own language<>foreign language)
 	this.delay_ok = 0; // delay if selected the correct answer, before switching to next question
 	this.delay_error = 250; // delay if selected the wrong answer, before showing the correct answer
+	this.select_options = undefined;
 }
 
 function go() {
 	// get list of Challenges from API
-	callAPI('GET',window.location.href+'api',{},(r)=>{parseListOfChallenges(r);start()});
+	callAPI('GET',window.location.href.replace(/[^/]*$/,'')+'api',{},(r)=>{parseListOfChallenges(r);start()});
 	//start();
 }
 function callAPI(method,apicall,reqobj,callback) {
@@ -53,7 +54,7 @@ function createOptionsList(listOfChallenges) {
 		let opt = document.createElement("option");
 		opt.value=le.id;
 		opt.text=le.id;
-		opt.selected=(le.id==currentChallenge.id);
+		opt.selected=(le.id==currentChallenge.id)||undefined;
 		opt.fkt=()=>{server_create_new_challenge(JSON.stringify(le.list),le.id);start()};
 		sel.appendChild(opt);		
 	});
@@ -88,7 +89,7 @@ function start(list,mc,mc_count,rrand,reverse,delay_ok,delay_error) {
 	e.appendChild(ta);
 	newBUTTON(e,[],'btn','start',function(){
 		config.list=ta.value;
-		server_create_new_challenge(toJSON(ta.value));
+		server_create_new_challenge(toJSON(ta.value),document.getElementById('select_list')?document.getElementById('select_list').options[document.getElementById('select_list').selectedIndex].value:undefined);
 		show_question();
 	});
 	e.appendChild(vl);
