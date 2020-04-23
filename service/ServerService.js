@@ -8,10 +8,10 @@ var list_of_Challenges = [];
  * no response value expected for this operation
  **/
 exports.addChallenge = function(body) {
-  //console.log(body);
+  list_of_Challenges=list_of_Challenges.filter((i)=>{return body.id!=i.id});
   list_of_Challenges.push(body);
   return new Promise(function(resolve, reject) {
-    resolve();
+    resolve(201);
   });
 }
 
