@@ -42,7 +42,8 @@ function parseListOfChallenges(locJSON) {
 			listOfChallenges.push(server_create_new_challenge(JSON.stringify(i.list),i.id));
 			console.log(i.id,i.list);
 		})
-		listOfChallenges.push(server_create_new_challenge(toJSON('Hier ist Platz für = This space is for\n deine eigenen Vokabeln = your own vocabulary'),'SELF-SERVICE'));
+		listOfChallenges.push(server_create_new_challenge(TXTtoJSON('Hier ist Platz für = This space is for\n deine eigenen Vokabeln = your own vocabulary'),'neue Liste / new list'));
+		currentChallenge=undefined;
 	}
 }
 function createOptionsList(listOfChallenges) {
@@ -53,15 +54,15 @@ function createOptionsList(listOfChallenges) {
 		let opt = document.createElement("option");
 		opt.value=le.id;
 		opt.text=le.id;
-		opt.selected=(le.id==currentChallenge.id)||undefined;
+		if (currentChallenge) {opt.selected=(le.id==currentChallenge.id)||undefined}
 		opt.fkt=()=>{server_create_new_challenge(JSON.stringify(le.list),le.id);show_start()};
-		sel.appendChild(opt);		
+		sel.appendChild(opt);
 	});
 	return sel;
 }
 
 function show_start(list,mc,mc_count,rrand,reverse,delay_ok,delay_error) {
-	if (list!==undefined) {config.list=list} else {config.list=currentChallenge?JSON.stringify(currentChallenge.list):'Hund = dog \nKatze = cat \nMaus = mouse'}
+	if (list!==undefined) {config.list=list} else {config.list=currentChallenge?LISTtoTXT(currentChallenge.list):'Hund = dog \nKatze = cat \nMaus = mouse'}
 	if (mc!==undefined) {config.mc=mc}
 	if (mc_count!==undefined) {config.mc_count=mc_count}
 	if (rrand!==undefined) {config.rrand=rrand}
@@ -79,7 +80,7 @@ function show_start(list,mc,mc_count,rrand,reverse,delay_ok,delay_error) {
 	ta.value=config.list;
 	e.innerHTML='<div class=label><span style=font-weight:bold>VCBLRY*</span> trainer input [ <a href=# onclick=open_upload_dialog()>import</a> ]</div>';
 	e.innerHTML+='<input id=import hidden type=file accept="application/json,text/plain" onchange="openFile(event,'+((v)=>{ta.value=v;updateVocabularyList();})+')">';
-	if (listOfChallenges.length>0) {e.appendChild(createOptionsList(listOfChallenges))}
+	if (listOfChallenges.length>0) {let e2=e.appendChild(createOptionsList(listOfChallenges)); e2.focus();}
 	let timeout=undefined;
 	ta.onkeyup=function(){
 		clearTimeout(timeout);
@@ -88,13 +89,13 @@ function show_start(list,mc,mc_count,rrand,reverse,delay_ok,delay_error) {
 	e.appendChild(ta);
 	newBUTTON(e,[],'btn','start',function(){
 		config.list=ta.value;
-		server_create_new_challenge(toJSON(ta.value),document.getElementById('select_list')?document.getElementById('select_list').options[document.getElementById('select_list').selectedIndex].value:undefined);
+		server_create_new_challenge(TXTtoJSON(ta.value),document.getElementById('select_list')?document.getElementById('select_list').options[document.getElementById('select_list').selectedIndex].value:undefined);
 		show_question();
 	});
 	e.appendChild(vl);
 	updateVocabularyList();
 }
-function updateVocabularyList() {vl.innerHTML=createVocabularyList(JSON.parse(toJSON(ta.value,true)))}
+function updateVocabularyList() {vl.innerHTML=createVocabularyList(JSON.parse(TXTtoJSON(ta.value,true)))}
 function createVocabularyList(list,highlight_list) {
 	// remove empty items/rows from list
 	list=list.filter((i)=>{return i.A||i.B});
@@ -113,7 +114,7 @@ function createVocabularyList(list,highlight_list) {
 		return a+res;
 	},'<div class=vl>')+'</div>';
 }
-function toJSON(list,get_res_all) {
+function TXTtoJSON(list,get_res_all) {
 	if (IsJsonString(list)) {return list}
 	let l=list.split(/\n/);
 	let res=[]; // contains all valid word-tupels
@@ -132,6 +133,9 @@ function toJSON(list,get_res_all) {
 	return JSON.stringify(get_res_all?res_all:res);
 }
 function IsJsonString(str) {let json=undefined; try {json=JSON.parse(str)} catch (e) {return false}; return json[0]?true:false}
+function LISTtoTXT(list) {
+	return list.reduce((a,c)=>{return a+c.A+' = '+c.B+'\n'},'');
+}
 
 function openFile(event,callback) {
 	let reader=new FileReader();
