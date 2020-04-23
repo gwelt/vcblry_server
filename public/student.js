@@ -43,7 +43,7 @@ function parseListOfChallenges(locJSON) {
 			console.log(i.id,i.list);
 		})
 		listOfChallenges.push(server_create_new_challenge(TXTtoJSON('Hier ist Platz für = This space is for\n deine eigenen Vokabeln = your own vocabulary'),'neue Liste / new list'));
-		currentChallenge=undefined;
+		server_create_new_challenge(JSON.stringify(listOfChallenges[0].list),listOfChallenges[0].id);
 	}
 }
 function createOptionsList(listOfChallenges) {
