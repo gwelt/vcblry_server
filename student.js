@@ -16,13 +16,11 @@ function Configuration() {
 	this.reverse = false; // always ask in reverse order (own language<>foreign language)
 	this.delay_ok = 0; // delay if selected the correct answer, before switching to next question
 	this.delay_error = 250; // delay if selected the wrong answer, before showing the correct answer
-	this.select_options = undefined;
 }
 
 function go() {
 	// get list of Challenges from API
-	callAPI('GET',window.location.href.replace(/[^/]*$/,'')+'api',{},(r)=>{parseListOfChallenges(r);start()});
-	//start();
+	callAPI('GET',window.location.href.replace(/[^/]*$/,'')+'api',{},(r)=>{parseListOfChallenges(r);show_start()});
 }
 function callAPI(method,apicall,reqobj,callback) {
 	if (!(apicall).startsWith('http')) {console.log('API-call to '+apicall+' aborted');callback();return true;}
@@ -44,6 +42,7 @@ function parseListOfChallenges(locJSON) {
 			listOfChallenges.push(server_create_new_challenge(JSON.stringify(i.list),i.id));
 			console.log(i.id,i.list);
 		})
+		listOfChallenges.push(server_create_new_challenge(toJSON('Hier ist Platz für = This space is for\n deine eigenen Vokabeln = your own vocabulary'),'SELF-SERVICE'));
 	}
 }
 function createOptionsList(listOfChallenges) {
@@ -55,13 +54,13 @@ function createOptionsList(listOfChallenges) {
 		opt.value=le.id;
 		opt.text=le.id;
 		opt.selected=(le.id==currentChallenge.id)||undefined;
-		opt.fkt=()=>{server_create_new_challenge(JSON.stringify(le.list),le.id);start()};
+		opt.fkt=()=>{server_create_new_challenge(JSON.stringify(le.list),le.id);show_start()};
 		sel.appendChild(opt);		
 	});
 	return sel;
 }
 
-function start(list,mc,mc_count,rrand,reverse,delay_ok,delay_error) {
+function show_start(list,mc,mc_count,rrand,reverse,delay_ok,delay_error) {
 	if (list!==undefined) {config.list=list} else {config.list=currentChallenge?JSON.stringify(currentChallenge.list):'Hund = dog \nKatze = cat \nMaus = mouse'}
 	if (mc!==undefined) {config.mc=mc}
 	if (mc_count!==undefined) {config.mc_count=mc_count}
@@ -215,7 +214,7 @@ function show_result() {
 	res+='</div>';
 	e.innerHTML=res;
 	e.innerHTML+=createVocabularyList(challenge.list,challenge.lookups)+'<p>';
-	newBUTTON(e,[],'btn','ok',function(){start()});
+	newBUTTON(e,[],'btn','ok',function(){show_start()});
 }
 
 function newBUTTON(e,btn_list,cl,text,fnc,answer) {
