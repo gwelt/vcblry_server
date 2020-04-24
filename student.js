@@ -92,7 +92,7 @@ function show_start(list,mc,mc_count,rrand,reverse,delay_ok,delay_error) {
 		let out={};
 		out.id=currentID;
 		out.list=JSON.parse(currentList);
-		if ((out.id!=DEFAULT_ID)&&(out.id!='')) {callAPI('POST',window.location.href.replace(/[^/]*$/,'')+'api',out,()=>{
+		if ((out.id!=DEFAULT_ID)&&(out.id!='')&&(out.id!=0)) {callAPI('POST',window.location.href.replace(/[^/]*$/,'')+'api',out,()=>{
 			get(()=>{
 				if (out.list=='') {
 					currentChallenge=server_create_new_challenge(JSON.stringify(listOfChallenges[0].list),listOfChallenges[0].id);
