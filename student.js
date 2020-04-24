@@ -21,7 +21,9 @@ function Configuration() {
 
 function go() {
 	get(()=>{
-		currentChallenge=server_create_new_challenge(JSON.stringify(listOfChallenges[0].list),listOfChallenges[0].id);
+		if (listOfChallenges.length>0) {
+			currentChallenge=server_create_new_challenge(JSON.stringify(listOfChallenges[0].list),listOfChallenges[0].id);
+		}
 		show_start();
 	});
 }
