@@ -1,7 +1,7 @@
 var listOfChallenges=[];
 var currentChallenge=undefined;
 var DEFAULT_ID='neue Liste / new list';
-function server_create_new_challenge(list,id) {currentChallenge=create_new_challenge(list,id); return currentChallenge}
+function server_create_new_challenge(list,id) {return create_new_challenge(list,id)}
 function server_get_question(reverse) {let r=currentChallenge.get_question(reverse,config.mc_count); return JSON.parse(r)}
 function server_check(word) {return currentChallenge.check(word)}
 function server_lookup(A) {return JSON.parse(currentChallenge.lookup(A))}
@@ -20,8 +20,24 @@ function Configuration() {
 }
 
 function go() {
+	get(()=>{
+		currentChallenge=server_create_new_challenge(JSON.stringify(listOfChallenges[0].list),listOfChallenges[0].id);
+		show_start();
+	});
+}
+function get(callback) {
 	// get list of Challenges from API
-	callAPI('GET',window.location.href.replace(/[^/]*$/,'')+'api',{},(r)=>{parseListOfChallenges(r);show_start()});
+	callAPI('GET',window.location.href.replace(/[^/]*$/,'')+'api',{},(r)=>{
+		if (IsJsonString(r)) {
+			listOfChallenges=[];
+			JSON.parse(r).forEach((i)=>{
+				listOfChallenges.push(server_create_new_challenge(JSON.stringify(i.list),i.id));
+				console.log(i.id,i.list);
+			})
+			listOfChallenges.push(server_create_new_challenge(TXTtoJSON('Hier ist Platz für = This space is for\n deine eigenen Vokabeln = your own vocabulary'),DEFAULT_ID));
+		}
+		callback();
+	});
 }
 function callAPI(method,apicall,reqobj,callback) {
 	if (!(apicall).startsWith('http')) {console.log('API-call to '+apicall+' aborted');callback();return true;}
@@ -36,31 +52,6 @@ function callAPI(method,apicall,reqobj,callback) {
 	req.send(JSON.stringify(reqobj));
 }
 function stopwatch(time) {if (typeof time != 'undefined') {return new Date()-time} else {return new Date()}}
-function parseListOfChallenges(locJSON) {
-	if (IsJsonString(locJSON)) {
-		listOfChallenges=[];
-		JSON.parse(locJSON).forEach((i)=>{
-			listOfChallenges.push(server_create_new_challenge(JSON.stringify(i.list),i.id));
-			console.log(i.id,i.list);
-		})
-		listOfChallenges.push(server_create_new_challenge(TXTtoJSON('Hier ist Platz für = This space is for\n deine eigenen Vokabeln = your own vocabulary'),DEFAULT_ID));
-		server_create_new_challenge(JSON.stringify(listOfChallenges[0].list),listOfChallenges[0].id);
-	}
-}
-function createOptionsList(listOfChallenges) {
-	let sel = document.createElement("select");
-	sel.id='select_list';
-	sel.onchange=()=>{sel.options[sel.selectedIndex].fkt()}
-	listOfChallenges.forEach((le)=>{
-		let opt = document.createElement("option");
-		opt.value=le.id;
-		opt.text=le.id;
-		if (currentChallenge) {opt.selected=(le.id==currentChallenge.id)||undefined}
-		opt.fkt=()=>{server_create_new_challenge(JSON.stringify(le.list),le.id);show_start()};
-		sel.appendChild(opt);
-	});
-	return sel;
-}
 
 function show_start(list,mc,mc_count,rrand,reverse,delay_ok,delay_error) {
 	if (list!==undefined) {config.list=list} else {config.list=currentChallenge?LISTtoTXT(currentChallenge.list):'Hund = dog \nKatze = cat \nMaus = mouse'}
@@ -91,21 +82,40 @@ function show_start(list,mc,mc_count,rrand,reverse,delay_ok,delay_error) {
 	newBUTTON(e,[],'btn','start',function(){
 		config.list=ta.value;
 		let currentID = document.getElementById('select_list')?document.getElementById('select_list').options[document.getElementById('select_list').selectedIndex].value:undefined;
+		if (currentID==DEFAULT_ID) {currentID = prompt('Please enter a name for this list:','');}
 		let currentList = TXTtoJSON(ta.value);
-		server_create_new_challenge(currentList,currentID);
+		currentChallenge = server_create_new_challenge(currentList,currentID);
 		
 		// save Challenge to server	(don't know if it changed... we just do it)
 		let input=JSON.parse(server_get_challenge());
 		let out={};
 		out.id=input.id;
 		out.list=input.list;
-		if (out.id==DEFAULT_ID) {out.id = prompt("Please enter name for list:", "");}
-		if ((out.id!=DEFAULT_ID)&&(out.id!='')) {callAPI('POST',window.location.href.replace(/[^/]*$/,'')+'api',out,()=>{callAPI('GET',window.location.href.replace(/[^/]*$/,'')+'api',{},(r)=>{parseListOfChallenges(r)}); alert('saved as '+out.id)})}
+		if ((out.id!=DEFAULT_ID)&&(out.id!='')) {callAPI('POST',window.location.href.replace(/[^/]*$/,'')+'api',out,()=>{
+			get(()=>{
+				if (out.list=='') {currentChallenge=undefined; show_start()} else {show_question()}
+			});
+		})} else {
+			show_question();
+		}
 		
-		show_question();
 	});
 	e.appendChild(vl);
 	updateVocabularyList();
+}
+function createOptionsList(listOfChallenges) {
+	let sel = document.createElement("select");
+	sel.id='select_list';
+	sel.onchange=()=>{sel.options[sel.selectedIndex].fkt()}
+	listOfChallenges.forEach((le)=>{
+		let opt = document.createElement("option");
+		opt.value=le.id;
+		opt.text=le.id;
+		if (currentChallenge) {opt.selected=(le.id==currentChallenge.id)||undefined}
+		opt.fkt=()=>{currentChallenge=server_create_new_challenge(JSON.stringify(le.list),le.id);show_start()};
+		sel.appendChild(opt);
+	});
+	return sel;
 }
 function updateVocabularyList() {vl.innerHTML=createVocabularyList(JSON.parse(TXTtoJSON(ta.value,true)))}
 function createVocabularyList(list,highlight_list) {
