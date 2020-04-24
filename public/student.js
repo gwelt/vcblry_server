@@ -1,5 +1,6 @@
 var listOfChallenges=[];
 var currentChallenge=undefined;
+var DEFAULT_ID='neue Liste / new list';
 function server_create_new_challenge(list,id) {currentChallenge=create_new_challenge(list,id); return currentChallenge}
 function server_get_question(reverse) {let r=currentChallenge.get_question(reverse,config.mc_count); return JSON.parse(r)}
 function server_check(word) {return currentChallenge.check(word)}
@@ -42,7 +43,7 @@ function parseListOfChallenges(locJSON) {
 			listOfChallenges.push(server_create_new_challenge(JSON.stringify(i.list),i.id));
 			console.log(i.id,i.list);
 		})
-		listOfChallenges.push(server_create_new_challenge(TXTtoJSON('Hier ist Platz für = This space is for\n deine eigenen Vokabeln = your own vocabulary'),'neue Liste / new list'));
+		listOfChallenges.push(server_create_new_challenge(TXTtoJSON('Hier ist Platz für = This space is for\n deine eigenen Vokabeln = your own vocabulary'),DEFAULT_ID));
 		server_create_new_challenge(JSON.stringify(listOfChallenges[0].list),listOfChallenges[0].id);
 	}
 }
@@ -89,7 +90,18 @@ function show_start(list,mc,mc_count,rrand,reverse,delay_ok,delay_error) {
 	e.appendChild(ta);
 	newBUTTON(e,[],'btn','start',function(){
 		config.list=ta.value;
-		server_create_new_challenge(TXTtoJSON(ta.value),document.getElementById('select_list')?document.getElementById('select_list').options[document.getElementById('select_list').selectedIndex].value:undefined);
+		let currentID = document.getElementById('select_list')?document.getElementById('select_list').options[document.getElementById('select_list').selectedIndex].value:undefined;
+		let currentList = TXTtoJSON(ta.value);
+		server_create_new_challenge(currentList,currentID);
+		
+		// save Challenge to server	(don't know if it changed... we just do it)
+		let input=JSON.parse(server_get_challenge());
+		let out={};
+		out.id=input.id;
+		out.list=input.list;
+		if (out.id==DEFAULT_ID) {out.id = prompt("Please enter name for list:", "");}
+		if ((out.id!=DEFAULT_ID)&&(out.id!='')) {callAPI('POST',window.location.href.replace(/[^/]*$/,'')+'api',out,()=>{callAPI('GET',window.location.href.replace(/[^/]*$/,'')+'api',{},(r)=>{parseListOfChallenges(r)}); alert('saved as '+out.id)})}
+		
 		show_question();
 	});
 	e.appendChild(vl);

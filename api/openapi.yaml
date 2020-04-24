@@ -2,6 +2,10 @@ openapi: 3.0.1
 info:
   title: VKBLRY* Challenges
   version: 0.0.1
+  description: Get and post sets/units of vocabulary (Challenges) to use for training.
+  contact:
+    name: github repository
+    url: https://github.com/gwelt/vcblry
 servers:
 - url: http://localhost:3000
 paths:
