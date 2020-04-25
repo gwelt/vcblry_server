@@ -106,6 +106,7 @@ function show_start(list,mc,mc_count,rrand,reverse,delay_ok,delay_error) {
 		timeout = setTimeout(function() {updateVocabularyList()}, 0);
 	}
 	e.appendChild(ta);
+
 	newBUTTON(e,[],'btn','start',function(){
 		config.list=ta.value;
 		let currentID = document.getElementById('select_list')?document.getElementById('select_list').options[document.getElementById('select_list').selectedIndex].value:undefined;
@@ -128,6 +129,33 @@ function show_start(list,mc,mc_count,rrand,reverse,delay_ok,delay_error) {
 		}
 
 	});
+
+	let boodiv = document.createElement("div");
+	boodiv.style.width='100%';
+	boodiv.style.display='flex';
+	// toogle A>B, B>A (config.reverse), A|B>B|A (config.rrand)
+	let ab   = newBUTTON(boodiv,[],'btn_mini_off','A > B',function(){config.reverse=false; config.rrand=false; doboo()});
+	let abba = newBUTTON(boodiv,[],'btn_mini_off','A|B > B|A',function(){config.rrand=!config.rrand; doboo()});
+	let ba   = newBUTTON(boodiv,[],'btn_mini_off','B > A',function(){config.reverse=true; config.rrand=false; doboo()});
+	ab.style.flex='auto'; ab.style.borderRadius='0.4rem 0 0 0.4rem'; 
+	abba.style.flex='auto'; abba.style.borderRadius='0'; 
+	ba.style.flex='auto'; ba.style.borderRadius='0 0.4rem 0.4rem 0'; 
+	e.appendChild(boodiv);
+	// toogle multiple-choice-mode (config.mc)
+	let mcb   = newBUTTON(e,[],'btn_mini_off','MC',function(){config.mc=!config.mc; doboo()});
+	doboo();
+	function doboo() {
+		if (config.rrand) {boo(ab,false);boo(ba,false);boo(abba,true);} else {
+			boo(abba,false);
+			if (config.reverse) {boo(ab,false);boo(ba,true)} else {boo(ab,true);boo(ba,false)}
+		}
+		boo(mcb,config.mc);
+	}
+	function boo(e,on) {
+		if (on) {e.classList.remove('btn_mini_off'); e.classList.add('btn_mini_on')} 
+		else {e.classList.remove('btn_mini_on'); e.classList.add('btn_mini_off')}
+	}
+
 	e.appendChild(vl);
 	updateVocabularyList();
 }
@@ -270,4 +298,5 @@ function newBUTTON(e,btn_list,cl,text,fnc,answer) {
 	d.answer=answer;
 	e.appendChild(d);
 	if (cl=='wordB') {btn_list.push(d)};
+	return d;
 }
