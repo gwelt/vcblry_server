@@ -1,7 +1,6 @@
 var listOfChallenges=[];
 var currentChallenge=undefined;
-var DEFAULT_ID='neue Liste / new list';
-var DEFAULT_TEXT='';//'Hier ist Platz für = This space is for\n deine eigenen Vokabeln = your own vocabulary';
+const DEFAULT={'id':'[ create a new list ]','text':'','placeholder':'Type or paste your vocabulary here.\nDo it like this:\nKatze = cat\nHund = dog'};
 function server_create_new_challenge(list,id) {return create_new_challenge(list,id)}
 function server_get_question(reverse) {let r=currentChallenge.get_question(reverse,config.mc_count); return JSON.parse(r)}
 function server_check(word) {return currentChallenge.check(word)}
@@ -32,7 +31,8 @@ function get(callback) {
 				listOfChallenges.push(server_create_new_challenge(JSON.stringify(i.list),i.id));
 				console.log(i.id,i.list);
 			})
-			listOfChallenges.push(server_create_new_challenge(TXTtoJSON(DEFAULT_TEXT),DEFAULT_ID));
+			listOfChallenges.sort((a,b)=>{return (a.id>b.id)?1:-1});
+			listOfChallenges.push(server_create_new_challenge(TXTtoJSON(DEFAULT.text),DEFAULT.id));
 		}
 		callback();
 	});
@@ -52,6 +52,12 @@ function callAPI(method,apicall,reqobj,callback) {
 function stopwatch(time) {if (typeof time != 'undefined') {return new Date()-time} else {return new Date()}}
 
 function show_start(list,mc,mc_count,rrand,reverse,delay_ok,delay_error) {
+	if (mc!==undefined) {config.mc=mc}
+	if (mc_count!==undefined) {config.mc_count=mc_count}
+	if (rrand!==undefined) {config.rrand=rrand}
+	if (reverse!==undefined) {config.reverse=reverse}
+	if (delay_ok!==undefined) {config.delay_ok=delay_ok}
+	if (delay_error!==undefined) {config.delay_error=delay_error}
 	let optionsList=undefined;
 	// generate optionsList and select currentChallenge
 	if (listOfChallenges.length>0) {
@@ -75,23 +81,21 @@ function show_start(list,mc,mc_count,rrand,reverse,delay_ok,delay_error) {
 		optionsList=sel;
 	}
 	if (list!==undefined) {config.list=list} else {config.list=currentChallenge?LISTtoTXT(currentChallenge.list):'Hund = dog \nKatze = cat \nMaus = mouse'}
-	if (mc!==undefined) {config.mc=mc}
-	if (mc_count!==undefined) {config.mc_count=mc_count}
-	if (rrand!==undefined) {config.rrand=rrand}
-	if (reverse!==undefined) {config.reverse=reverse}
-	if (delay_ok!==undefined) {config.delay_ok=delay_ok}
-	if (delay_error!==undefined) {config.delay_error=delay_error}
 	let s=document.getElementById('stats');
 	s.innerHTML='';
 	let e=document.getElementById('main');
+	e.innerHTML='';//'<div class=label><span style=font-weight:bold>VCBLRY*</span> input</div>';
+	let advanced_options=' <a href=# onclick="ta.hidden=!ta.hidden">edit</a> | <a href=# onclick=open_upload_dialog()>import</a>';
+	e.innerHTML+='<div class=label><span style=font-weight:bold>VCBLRY*</span> trainer &nbsp; '+advanced_options+'</div>';
+	e.innerHTML+='<input id=import hidden type=file accept="application/json,text/plain" onchange="openFile(event,'+((v)=>{ta.value=v;updateVocabularyList();})+')">';
 	let ta=document.createElement('textarea');
 	let vl=document.createElement('div');
 	vl.id='vl';
 	ta.id='ta';
 	ta.rows=10;
 	ta.value=config.list;
-	e.innerHTML='<div class=label><span style=font-weight:bold>VCBLRY*</span> trainer input [ <a href=# onclick=open_upload_dialog()>import</a> ]</div>';
-	e.innerHTML+='<input id=import hidden type=file accept="application/json,text/plain" onchange="openFile(event,'+((v)=>{ta.value=v;updateVocabularyList();})+')">';
+	ta.placeholder=DEFAULT.placeholder;
+	ta.hidden=!currentChallenge?false:(currentChallenge.id!=DEFAULT.id);
 	if (optionsList!=undefined) {
 		let e2=e.appendChild(optionsList);
 		e2.focus();
@@ -105,7 +109,8 @@ function show_start(list,mc,mc_count,rrand,reverse,delay_ok,delay_error) {
 	newBUTTON(e,[],'btn','start',function(){
 		config.list=ta.value;
 		let currentID = document.getElementById('select_list')?document.getElementById('select_list').options[document.getElementById('select_list').selectedIndex].value:undefined;
-		if (currentID==DEFAULT_ID) {currentID = prompt('Please enter a name for this list:','');}
+		if ((currentID==DEFAULT.id)&&(ta.value)) {currentID = prompt('Please enter a name for your new list.\n(If you don\'t give it at name, it will not be saved.)','');}
+		if (currentID==DEFAULT.id) {currentID=null}
 		let currentList = TXTtoJSON(ta.value);
 		currentChallenge = server_create_new_challenge(currentList,currentID);
 		
@@ -116,7 +121,7 @@ function show_start(list,mc,mc_count,rrand,reverse,delay_ok,delay_error) {
 		if ((out.id!='')&&(out.id!==null)) {callAPI('POST',window.location.href.replace(/[^/]*$/,'')+'api',out,()=>{
 			get(()=>{
 				// server will delete Challenges with no content - if so, show_start instead of showing no questions
-				if (out.list=='') {show_start()} else {show_question()}
+				if (out.list=='') {currentChallenge=undefined; show_start()} else {show_question()}
 			});
 		})} else {
 			show_question();
@@ -173,7 +178,11 @@ function openFile(event,callback) {
 	reader.readAsText(event.target.files[0]);
 	reader.onload=()=>{callback(reader.result)};
 };
-function open_upload_dialog() {document.getElementById('import').click()}
+function open_upload_dialog() {
+	// select the last element of options-list (which always is the "create-new"-option)
+	document.getElementById('select_list')[document.getElementById('select_list').options.length-1].fkt();
+	document.getElementById('import').click();
+}
 
 function show_stats(s) {
 	if (s==undefined) {s=server_get_stats()}
