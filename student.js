@@ -15,8 +15,8 @@ function Configuration() {
 	this.mc_count = 3; // number of options shown with multiple-choice (min 3, max 8, default 3) (will also apply for check if mode is not mc)
 	this.rrand = true; // ask in random order (own language<>foreign language)
 	this.reverse = false; // always ask in reverse order (own language<>foreign language)
-	this.delay_ok = 0; // delay if selected the correct answer, before switching to next question
-	this.delay_error = 250; // delay if selected the wrong answer, before showing the correct answer
+	this.delay_ok = 250; // delay if selected the correct answer, before switching to next question
+	this.delay_error = 0; // delay if selected the wrong answer, before showing the correct answer
 }
 
 function go() {
@@ -72,7 +72,10 @@ function show_start(list,mc,mc_count,rrand,reverse,delay_ok,delay_error) {
 			let select_this_one=currentChallenge&&(le.id==currentChallenge.id);
 			there_is_a_selected_option=there_is_a_selected_option||select_this_one;
 			if (currentChallenge) {opt.selected=select_this_one||undefined}
-			opt.fkt=()=>{currentChallenge=server_create_new_challenge(JSON.stringify(le.list),le.id);show_start()};
+			opt.fkt=()=>{
+				currentChallenge=server_create_new_challenge(JSON.stringify(le.list),le.id);
+				show_start()
+			};
 			sel.appendChild(opt);
 		});
 		if (!there_is_a_selected_option) {
@@ -107,13 +110,16 @@ function show_start(list,mc,mc_count,rrand,reverse,delay_ok,delay_error) {
 	}
 	e.appendChild(ta);
 
+	// START-button
 	newBUTTON(e,[],'btn','start',function(){
 		config.list=ta.value;
 		let currentID = document.getElementById('select_list')?document.getElementById('select_list').options[document.getElementById('select_list').selectedIndex].value:undefined;
 		if ((currentID==DEFAULT.id)&&(ta.value)) {currentID = prompt('Please enter a name for your new list.\n(If you don\'t give it at name, it will not be saved.)','');}
 		if (currentID==DEFAULT.id) {currentID=null}
 		let currentList = TXTtoJSON(ta.value);
-		currentChallenge = server_create_new_challenge(currentList,currentID);
+		if (!currentChallenge||(currentChallenge&&currentChallenge.id!=currentID)||(currentChallenge.not_answered&&currentChallenge.not_answered.length<1)) {
+			currentChallenge = server_create_new_challenge(currentList,currentID);
+		}
 		
 		// save Challenge to server	(don't know if it changed... we just do it)
 		let out={};
@@ -130,30 +136,28 @@ function show_start(list,mc,mc_count,rrand,reverse,delay_ok,delay_error) {
 
 	});
 
+	// OPTIONS-buttons
 	let boodiv = document.createElement("div");
 	boodiv.style.width='100%';
 	boodiv.style.display='flex';
 	// toogle A>B, B>A (config.reverse), A|B>B|A (config.rrand)
 	let ab   = newBUTTON(boodiv,[],'btn_mini_off','A > B',function(){config.reverse=false; config.rrand=false; doboo()});
-	let abba = newBUTTON(boodiv,[],'btn_mini_off','A|B > B|A',function(){config.rrand=!config.rrand; doboo()});
+	let abba = newBUTTON(boodiv,[],'btn_mini_off','A|B > B|A',function(){config.rrand=true; doboo()});
 	let ba   = newBUTTON(boodiv,[],'btn_mini_off','B > A',function(){config.reverse=true; config.rrand=false; doboo()});
 	ab.style.flex='auto'; ab.style.borderRadius='0.4rem 0 0 0.4rem'; 
 	abba.style.flex='auto'; abba.style.borderRadius='0'; 
 	ba.style.flex='auto'; ba.style.borderRadius='0 0.4rem 0.4rem 0'; 
 	e.appendChild(boodiv);
 	// toogle multiple-choice-mode (config.mc)
-	let mcb   = newBUTTON(e,[],'btn_mini_off','MC',function(){config.mc=!config.mc; doboo()});
+	let mcb  = newBUTTON(e,[],'btn_mini_off','MC',function(){config.mc=!config.mc; doboo()});
 	doboo();
+	
 	function doboo() {
-		if (config.rrand) {boo(ab,false);boo(ba,false);boo(abba,true);} else {
-			boo(abba,false);
-			if (config.reverse) {boo(ab,false);boo(ba,true)} else {boo(ab,true);boo(ba,false)}
-		}
+		boo(ab,!config.rrand&&!config.reverse);
+		boo(ba,!config.rrand&&config.reverse);
+		boo(abba,config.rrand);
 		boo(mcb,config.mc);
-	}
-	function boo(e,on) {
-		if (on) {e.classList.remove('btn_mini_off'); e.classList.add('btn_mini_on')} 
-		else {e.classList.remove('btn_mini_on'); e.classList.add('btn_mini_off')}
+		function boo(e,on) {e.classList.toggle('btn_mini_off',!on); e.classList.toggle('btn_mini_on',on)}
 	}
 
 	e.appendChild(vl);
@@ -221,7 +225,7 @@ function show_stats(s) {
 	while (s.assist-s.error>0) {s.assist--;	e.appendChild(newDOT('assist'));}
 	while (s.error>0) {s.error--; e.appendChild(newDOT('error'));}
 	e.lastChild.classList.add('last');
-	e.onclick=()=>{confirm('Do you want to quit?')?show_start():undefined};
+	e.onclick=()=>{if (listOfChallenges.length>0) {show_start()} else {confirm('Do you want to quit?')?show_start():undefined}};
 	function newDOT(cl) {let d=document.createElement('div'); d.classList.add('dot',cl); return d;}
 }
 
@@ -244,7 +248,7 @@ function show_question(q,is_started,is_assist) {
 			let cl='wordB';
 			if (is_assist) {
 				if (assist_answer.B==q.B_list[i]) {
-					newBUTTON(e,btn_list,'wordB',q.B_list[i],function(){show_question()});
+					newBUTTON(e,btn_list,cl,q.B_list[i],function(){show_question()});
 				}
 			} else {				
 				newBUTTON(e,btn_list,cl,q.B_list[i],function(){answer(this,btn_list)},new Word(q.A,q.B_list[i]));
@@ -276,6 +280,7 @@ function answer(btn,btn_list) {
 }
 
 function show_result() {
+	show_stats();
 	let challenge = JSON.parse(server_get_challenge());
 	let e=document.getElementById('main');
 	let res='<div class=results>';
