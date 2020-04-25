@@ -135,7 +135,7 @@ function updateVocabularyList() {vl.innerHTML=createVocabularyList(JSON.parse(TX
 function createVocabularyList(list,highlight_list) {
 	// remove empty items/rows from list
 	list=list.filter((i)=>{return i.A||i.B});
-	return '<div class=vlHeader><span style=font-weight:bold>'+(currentChallenge?(currentChallenge.id||'VCBLRY*')+'</span> list':'VCBLRY*</span> list')+' ('+list.length+')</div>'+list.reduce(function(a,c){
+	return '<div class=vlHeader><span style=font-weight:bold>'+(currentChallenge?(currentChallenge.id||'VCBLRY*</span> list')+'</span>':'VCBLRY*</span> list')+' ('+list.length+')</div>'+list.reduce(function(a,c){
 		let res='';
 		// check if it's a valid word-tupel
 		if (c.A&&c.B) {
