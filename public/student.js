@@ -135,7 +135,7 @@ function updateVocabularyList() {vl.innerHTML=createVocabularyList(JSON.parse(TX
 function createVocabularyList(list,highlight_list) {
 	// remove empty items/rows from list
 	list=list.filter((i)=>{return i.A||i.B});
-	return '<div class=vlHeader><span style=font-weight:bold>VCBLRY*</span> list ('+list.length+')</div>'+list.reduce(function(a,c){
+	return '<div class=vlHeader><span style=font-weight:bold>'+(currentChallenge?(currentChallenge.id||'VCBLRY*')+'</span> list':'VCBLRY*</span> list')+' ('+list.length+')</div>'+list.reduce(function(a,c){
 		let res='';
 		// check if it's a valid word-tupel
 		if (c.A&&c.B) {
@@ -180,7 +180,7 @@ function openFile(event,callback) {
 };
 function open_upload_dialog() {
 	// select the last element of options-list (which always is the "create-new"-option)
-	document.getElementById('select_list')[document.getElementById('select_list').options.length-1].fkt();
+	if (document.getElementById('select_list')) {document.getElementById('select_list')[document.getElementById('select_list').options.length-1].fkt()};
 	document.getElementById('import').click();
 }
 
@@ -193,6 +193,7 @@ function show_stats(s) {
 	while (s.assist-s.error>0) {s.assist--;	e.appendChild(newDOT('assist'));}
 	while (s.error>0) {s.error--; e.appendChild(newDOT('error'));}
 	e.lastChild.classList.add('last');
+	e.onclick=()=>{confirm('Do you want to quit?')?show_start():undefined};
 	function newDOT(cl) {let d=document.createElement('div'); d.classList.add('dot',cl); return d;}
 }
 
