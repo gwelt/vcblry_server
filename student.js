@@ -1,6 +1,7 @@
 var listOfChallenges=[];
 var currentChallenge=undefined;
 var DEFAULT_ID='neue Liste / new list';
+var DEFAULT_TEXT='';//'Hier ist Platz für = This space is for\n deine eigenen Vokabeln = your own vocabulary';
 function server_create_new_challenge(list,id) {return create_new_challenge(list,id)}
 function server_get_question(reverse) {let r=currentChallenge.get_question(reverse,config.mc_count); return JSON.parse(r)}
 function server_check(word) {return currentChallenge.check(word)}
@@ -20,12 +21,7 @@ function Configuration() {
 }
 
 function go() {
-	get(()=>{
-		if (listOfChallenges.length>0) {
-			currentChallenge=server_create_new_challenge(JSON.stringify(listOfChallenges[0].list),listOfChallenges[0].id);
-		}
-		show_start();
-	});
+	get(()=>{show_start()});
 }
 function get(callback) {
 	// get list of Challenges from API
@@ -36,7 +32,7 @@ function get(callback) {
 				listOfChallenges.push(server_create_new_challenge(JSON.stringify(i.list),i.id));
 				console.log(i.id,i.list);
 			})
-			listOfChallenges.push(server_create_new_challenge(TXTtoJSON('Hier ist Platz für = This space is for\n deine eigenen Vokabeln = your own vocabulary'),DEFAULT_ID));
+			listOfChallenges.push(server_create_new_challenge(TXTtoJSON(DEFAULT_TEXT),DEFAULT_ID));
 		}
 		callback();
 	});
@@ -56,6 +52,28 @@ function callAPI(method,apicall,reqobj,callback) {
 function stopwatch(time) {if (typeof time != 'undefined') {return new Date()-time} else {return new Date()}}
 
 function show_start(list,mc,mc_count,rrand,reverse,delay_ok,delay_error) {
+	let optionsList=undefined;
+	// generate optionsList and select currentChallenge
+	if (listOfChallenges.length>0) {
+		let sel = document.createElement("select");
+		sel.id='select_list';
+		sel.onchange=()=>{sel.options[sel.selectedIndex].fkt()}
+		let there_is_a_selected_option=false;
+		listOfChallenges.forEach((le)=>{
+			let opt = document.createElement("option");
+			opt.value=le.id;
+			opt.text=le.id;
+			let select_this_one=currentChallenge&&(le.id==currentChallenge.id);
+			there_is_a_selected_option=there_is_a_selected_option||select_this_one;
+			if (currentChallenge) {opt.selected=select_this_one||undefined}
+			opt.fkt=()=>{currentChallenge=server_create_new_challenge(JSON.stringify(le.list),le.id);show_start()};
+			sel.appendChild(opt);
+		});
+		if (!there_is_a_selected_option) {
+			currentChallenge=server_create_new_challenge(JSON.stringify(listOfChallenges[0].list),listOfChallenges[0].id);
+		}
+		optionsList=sel;
+	}
 	if (list!==undefined) {config.list=list} else {config.list=currentChallenge?LISTtoTXT(currentChallenge.list):'Hund = dog \nKatze = cat \nMaus = mouse'}
 	if (mc!==undefined) {config.mc=mc}
 	if (mc_count!==undefined) {config.mc_count=mc_count}
@@ -74,7 +92,10 @@ function show_start(list,mc,mc_count,rrand,reverse,delay_ok,delay_error) {
 	ta.value=config.list;
 	e.innerHTML='<div class=label><span style=font-weight:bold>VCBLRY*</span> trainer input [ <a href=# onclick=open_upload_dialog()>import</a> ]</div>';
 	e.innerHTML+='<input id=import hidden type=file accept="application/json,text/plain" onchange="openFile(event,'+((v)=>{ta.value=v;updateVocabularyList();})+')">';
-	if (listOfChallenges.length>0) {let e2=e.appendChild(createOptionsList(listOfChallenges)); e2.focus();}
+	if (optionsList!=undefined) {
+		let e2=e.appendChild(optionsList);
+		e2.focus();
+	}
 	let timeout=undefined;
 	ta.onkeyup=function(){
 		clearTimeout(timeout);
@@ -94,32 +115,16 @@ function show_start(list,mc,mc_count,rrand,reverse,delay_ok,delay_error) {
 		out.list=JSON.parse(currentList);
 		if ((out.id!='')&&(out.id!==null)) {callAPI('POST',window.location.href.replace(/[^/]*$/,'')+'api',out,()=>{
 			get(()=>{
-				if (out.list=='') {
-					currentChallenge=server_create_new_challenge(JSON.stringify(listOfChallenges[0].list),listOfChallenges[0].id);
-					show_start();
-				} else {show_question()}
+				// server will delete Challenges with no content - if so, show_start instead of showing no questions
+				if (out.list=='') {show_start()} else {show_question()}
 			});
 		})} else {
 			show_question();
 		}
-		
+
 	});
 	e.appendChild(vl);
 	updateVocabularyList();
-}
-function createOptionsList(listOfChallenges) {
-	let sel = document.createElement("select");
-	sel.id='select_list';
-	sel.onchange=()=>{sel.options[sel.selectedIndex].fkt()}
-	listOfChallenges.forEach((le)=>{
-		let opt = document.createElement("option");
-		opt.value=le.id;
-		opt.text=le.id;
-		if (currentChallenge) {opt.selected=(le.id==currentChallenge.id)||undefined}
-		opt.fkt=()=>{currentChallenge=server_create_new_challenge(JSON.stringify(le.list),le.id);show_start()};
-		sel.appendChild(opt);
-	});
-	return sel;
 }
 function updateVocabularyList() {vl.innerHTML=createVocabularyList(JSON.parse(TXTtoJSON(ta.value,true)))}
 function createVocabularyList(list,highlight_list) {
