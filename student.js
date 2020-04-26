@@ -101,7 +101,7 @@ function show_start(list,mc,mc_count,rrand,reverse,delay_ok,delay_error) {
 	ta.hidden=!currentChallenge?false:(currentChallenge.id!=DEFAULT.id);
 	if (optionsList!=undefined) {
 		let e2=e.appendChild(optionsList);
-		e2.focus();
+		//e2.focus();
 	}
 	let timeout=undefined;
 	ta.onkeyup=function(){
@@ -118,7 +118,7 @@ function show_start(list,mc,mc_count,rrand,reverse,delay_ok,delay_error) {
 		if (currentID==DEFAULT.id) {currentID=null}
 		let currentList = TXTtoJSON(ta.value);
 		// if something changed, create a new Challenge
-		if ( (!currentChallenge) || (JSON.stringify(currentChallenge.list)!=currentList) ) {
+		if ( (!currentChallenge) || (JSON.stringify(currentChallenge.list)!=currentList) || (currentChallenge.not_answered.length<1) ) {
 			currentChallenge = server_create_new_challenge(currentList,currentID);			
 		}
 		
