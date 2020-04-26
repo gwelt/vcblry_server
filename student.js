@@ -91,9 +91,9 @@ function show_start(list,mc,mc_count,rrand,reverse,delay_ok,delay_error) {
 	let advanced_options=' <a href=# onclick="ta.hidden=!ta.hidden">edit</a> | <a href=# onclick=open_upload_dialog()>import</a>';
 	e.innerHTML+='<div class=label><span style=font-weight:bold>VCBLRY*</span> trainer &nbsp; '+advanced_options+'</div>';
 	e.innerHTML+='<input id=import hidden type=file accept="application/json,text/plain" onchange="openFile(event,'+((v)=>{ta.value=v;updateVocabularyList();})+')">';
-	let ta=document.createElement('textarea');
 	let vl=document.createElement('div');
 	vl.id='vl';
+	let ta=document.createElement('textarea');
 	ta.id='ta';
 	ta.rows=10;
 	ta.value=config.list;
@@ -117,8 +117,9 @@ function show_start(list,mc,mc_count,rrand,reverse,delay_ok,delay_error) {
 		if ((currentID==DEFAULT.id)&&(ta.value)) {currentID = prompt('Please enter a name for your new list.\n(If you don\'t give it at name, it will not be saved.)','');}
 		if (currentID==DEFAULT.id) {currentID=null}
 		let currentList = TXTtoJSON(ta.value);
-		if (!currentChallenge||(currentChallenge&&currentChallenge.id!=currentID)||(currentChallenge.not_answered&&currentChallenge.not_answered.length<1)) {
-			currentChallenge = server_create_new_challenge(currentList,currentID);
+		// if something changed, create a new Challenge
+		if ( (!currentChallenge) || (JSON.stringify(currentChallenge.list)!=currentList) ) {
+			currentChallenge = server_create_new_challenge(currentList,currentID);			
 		}
 		
 		// save Challenge to server	(don't know if it changed... we just do it)
@@ -142,7 +143,7 @@ function show_start(list,mc,mc_count,rrand,reverse,delay_ok,delay_error) {
 	boodiv.style.display='flex';
 	// toogle A>B, B>A (config.reverse), A|B>B|A (config.rrand)
 	let ab   = newBUTTON(boodiv,[],'btn_mini_off','A > B',function(){config.reverse=false; config.rrand=false; doboo()});
-	let abba = newBUTTON(boodiv,[],'btn_mini_off','A|B > B|A',function(){config.rrand=true; doboo()});
+	let abba = newBUTTON(boodiv,[],'btn_mini_off','A|B>B|A',function(){config.rrand=true; doboo()});
 	let ba   = newBUTTON(boodiv,[],'btn_mini_off','B > A',function(){config.reverse=true; config.rrand=false; doboo()});
 	ab.style.flex='auto'; ab.style.borderRadius='0.4rem 0 0 0.4rem'; 
 	abba.style.flex='auto'; abba.style.borderRadius='0'; 
