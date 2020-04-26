@@ -10,10 +10,7 @@
   "repository": {
     "type" : "git",
     "url" : "https://github.com/gwelt/vcblry.git"
-  }
-  "keywords": [
-    "swagger"
-  ],
+  },
   "license": "Apache-2.0",
   "dependencies": {
     "connect": "^3.2.0",
