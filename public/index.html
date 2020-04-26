@@ -13,12 +13,17 @@
 		html, body, section, div, input, textarea, select, button {border-radius: 0.4rem;font-family: Verdana, Geneva, sans-serif; font-size: 1.3rem; width:100%; overflow-wrap:break-word;}
 		body {border:0; padding:0%; margin:0; background-color:#fbfbfb; color: #000;}
 
-		.bigscreen {padding:0rem 1.3rem 1rem 1rem; margin:0;}
+		.bigscreen {padding:0rem 1rem 1rem 1rem; margin:0;}
 		.screen {min-width:300px; max-width:420px; margin:auto;}
 
 		@media only screen and (max-width: 320px) {
+			.bigscreen {padding:0rem 0.6rem 1rem 0.6rem;}
 			.screen {min-width:260px;}
 			html, body, section, div, input, textarea, select, button {font-size: 1rem}
+		}
+		@media only screen and (min-width: 768px) {
+			.screen {min-width:640px; max-width:800px; margin:auto;}
+			html, body, section, div, input, textarea, select, button {font-size: 1.5rem}
 		}
 
 		.stats {display:flex; margin:0 0 0.4rem 0; cursor:pointer;}
