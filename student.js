@@ -90,7 +90,7 @@ function show_start(list,mc,mc_count,rrand,reverse,delay_ok,delay_error) {
 	e.innerHTML='';//'<div class=label><span style=font-weight:bold>VCBLRY*</span> input</div>';
 	let advanced_options=' <a href=# onclick="ta.hidden=!ta.hidden">edit</a> | <a href=# onclick=open_upload_dialog()>import</a>';
 	e.innerHTML+='<div class=label><span style=font-weight:bold>VCBLRY*</span> trainer &nbsp; '+advanced_options+'</div>';
-	e.innerHTML+='<input id=import hidden type=file accept="application/json,text/plain" onchange="openFile(event,'+((v)=>{ta.value=v;updateVocabularyList();})+')">';
+	e.innerHTML+='<input id=import hidden type=file accept="application/json,text/plain" onchange="openFile(event,'+((v)=>{if (v.length<=5000) {ta.value=v;updateVocabularyList();} else {alert('File must not exceed 5000 characters.')}})+')">';
 	let vl=document.createElement('div');
 	vl.id='vl';
 	let ta=document.createElement('textarea');
