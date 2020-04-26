@@ -7,6 +7,10 @@
     "prestart": "npm install",
     "start": "node index.js"
   },
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/gwelt/vcblry.git"
+  }
   "keywords": [
     "swagger"
   ],
