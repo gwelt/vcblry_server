@@ -1,9 +1,10 @@
 ![vcblry icon](public/vcblry180.png)
-# vocabulary trainer for mobiles
+# vocabulary database-server and trainer for mobiles
 
 ## Overview
-This is a server for a vocabulary trainer, written in Node.JS.  
-It serves an HTML-UI adapted for mobile devices as well as an [OpenAPI](https://github.com/OAI/OpenAPI-Specification)-REST-interface to fetch and store vocabulary-sets ("challenges").
+This is a server for vocabulary-database and online vocabulary-trainer.  
+It serves HTML for the client-UI adapted for mobile devices as well as an [OpenAPI](https://github.com/OAI/OpenAPI-Specification)-REST-interface to fetch and store vocabulary-sets ("challenges").  
+The client can also be used offline / without the server running. Open `public/index.html` or try it on https://gwelt.github.io/vcblry/.
 
 ### Running the server
 To run the server, run:
@@ -14,7 +15,7 @@ To open the VCBLRY* in the browser:
 ```
 open http://localhost:3000
 ```
-To view the Swagger UI interface:
+Swagger UI interface:
 ```
 open http://localhost:3000/docs
 ```
