@@ -17,9 +17,9 @@
    id="svg8"
    inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)"
    sodipodi:docname="vcblry.svg"
-   inkscape:export-filename="/home/sven/vcblry/public/favicon.ico.png"
-   inkscape:export-xdpi="22.690001"
-   inkscape:export-ydpi="22.690001">
+   inkscape:export-filename="/home/sven/vcblry/public/vcblry180.png"
+   inkscape:export-xdpi="42.540001"
+   inkscape:export-ydpi="42.540001">
   <defs
      id="defs2">
     <linearGradient
@@ -48,10 +48,10 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.7"
-     inkscape:cx="440.6014"
-     inkscape:cy="127.49663"
+     inkscape:cx="214.88711"
+     inkscape:cy="134.63949"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer3"
+     inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1600"
      inkscape:window-height="852"
@@ -74,53 +74,58 @@
      inkscape:groupmode="layer"
      id="layer3"
      inkscape:label="Ebene 3"
-     style="display:inline">
-    <rect
-       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke-width:0.24616167"
-       id="rect21"
-       width="100"
-       height="100"
-       x="3.5907736"
-       y="3.5148022"
-       inkscape:export-xdpi="45.720001"
-       inkscape:export-ydpi="45.720001" />
-  </g>
+     style="display:inline" />
   <g
      inkscape:label="Ebene 1"
      inkscape:groupmode="layer"
      id="layer1"
      style="display:inline"
      transform="translate(-58.640404,-81.817032)">
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:27.7332592px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.69333148"
-       x="115.18785"
-       y="100.87308"
-       id="text3768-2"
-       transform="scale(0.91866506,1.088536)"
-       inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96"><tspan
-         sodipodi:role="line"
-         x="115.18785"
-         y="100.87308"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:44.37321472px;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke-width:0.69333148"
-         id="tspan3770-0"
-         dy="18.683924">VCB</tspan><tspan
-         sodipodi:role="line"
-         x="115.18785"
-         y="156.3396"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:44.37321472px;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke-width:0.69333148"
-         id="tspan3774-2">LRY</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:41.77979279px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1.04449487"
-       x="142.9393"
-       y="161.41368"
-       id="text6641"><tspan
-         sodipodi:role="line"
-         id="tspan6639"
-         x="142.9393"
-         y="161.41368"
-         style="stroke-width:1.04449487">*</tspan></text>
+    <rect
+       style="display:inline;opacity:1;fill:none;fill-opacity:1;stroke-width:0.16537522"
+       id="rect21"
+       width="67.181541"
+       height="67.181541"
+       x="78.791412"
+       y="101.96804"
+       inkscape:export-xdpi="45.720001"
+       inkscape:export-ydpi="45.720001" />
+    <g
+       style="fill:#000000"
+       id="g4543"
+       transform="translate(0.9593939,1.4314367)">
+      <text
+         inkscape:export-ydpi="96"
+         inkscape:export-xdpi="96"
+         transform="scale(0.86535042,1.1556012)"
+         id="text3768-2"
+         y="99.53804"
+         x="123.32198"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:20.92046547px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.52301162"
+         xml:space="preserve"><tspan
+           dy="14.094137"
+           id="tspan3770-0"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:33.47274399px;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke-width:0.52301162"
+           y="99.53804"
+           x="123.32198"
+           sodipodi:role="line">VCB</tspan><tspan
+           id="tspan3774-2"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:33.47274399px;font-family:'Source Code Pro';-inkscape-font-specification:'Source Code Pro, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke-width:0.52301162"
+           y="141.37897"
+           x="123.32198"
+           sodipodi:role="line">LRY</tspan></text>
+      <text
+         transform="scale(0.94196509,1.0616105)"
+         id="text6641"
+         y="147.2823"
+         x="141.29309"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:31.51640701px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.78791022"
+         xml:space="preserve"><tspan
+           style="fill:#000000;stroke-width:0.78791022"
+           y="147.2823"
+           x="141.29309"
+           id="tspan6639"
+           sodipodi:role="line">*</tspan></text>
+    </g>
   </g>
 </svg>

@@ -288,7 +288,11 @@ function show_result() {
 	//res+=challenge.list.length+' Vokabeln<br>';
 	//res+='<div style=font-size:0.8rem><i>'+challenge.list[0].A+'</i> bis <i>'+challenge.list[challenge.list.length-1].A+'</i></div>';
 	//if (challenge.lookups.length-challenge.wrong_answers.length>0) {res+=(challenge.lookups.length-challenge.wrong_answers.length)+' Hilfen<br>';}
-	res+='<div style=font-size:3rem>'+(100-Math.round((challenge.wrong_answers.length/(challenge.list.length||1))*100))+'%</div>';
+	let percentage=(100-Math.round((challenge.wrong_answers.length/(challenge.list.length||1))*100));
+	res+='<div style=font-size:3rem>'+percentage+'%</div>';
+	let stars=''; 
+	let i=0; while (i<5) {i++; stars+='<div class="star '+(percentage>=i*20?'star1':(percentage-(i*20)>=-10?'star2':'star3'))+'"></div>';}
+	res+='<div style="margin:1rem auto 1rem auto;width:40%;display:flex;min-height:1.6rem">'+stars+'</div>';
 	//res+='<div style=font-size:0.8rem>'+challenge.wrong_answers.length+' Fehler</div><p>';
 	res+='</div>';
 	e.innerHTML=res;
