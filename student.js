@@ -1,6 +1,6 @@
 var listOfChallenges=[];
 var currentChallenge=undefined;
-const DEFAULT={'id':'[ create a new list ]','text':'','placeholder':'Type or paste your vocabulary here.\nDo it like this:\nKatze = cat\nHund = dog'};
+const DEFAULT={'id':'[ create a new list ]','text':'','placeholder':'Type or paste your vocabulary here. \nDo it like this: \nKatze = cat \nHund = dog'};
 function server_create_new_challenge(list,id) {return create_new_challenge(list,id)}
 function server_get_question(reverse) {let r=currentChallenge.get_question(reverse,config.mc_count); return JSON.parse(r)}
 function server_check(word) {return currentChallenge.check(word)}
