@@ -17,14 +17,15 @@
    id="svg8"
    inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)"
    sodipodi:docname="vcblry.svg"
-   inkscape:export-filename="/home/sven/vcblry/public/vcblry48.png"
-   inkscape:export-xdpi="11.343131"
-   inkscape:export-ydpi="11.343131">
+   inkscape:export-filename="/home/sven/vcblry/public/vcblry180.png"
+   inkscape:export-xdpi="42.540001"
+   inkscape:export-ydpi="42.540001">
   <defs
      id="defs2">
     <linearGradient
        id="linearGradient6892"
-       osb:paint="solid">
+       osb:paint="solid"
+       gradientTransform="matrix(0.87789255,0,0,0.88228404,6.2453536,5.6824379)">
       <stop
          style="stop-color:#f9f9f9;stop-opacity:1;"
          offset="0"
@@ -46,9 +47,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.98994949"
-     inkscape:cx="283.18571"
-     inkscape:cy="140.449"
+     inkscape:zoom="1.4"
+     inkscape:cx="222.6341"
+     inkscape:cy="190.6195"
      inkscape:document-units="mm"
      inkscape:current-layer="layer2"
      showgrid="false"
@@ -72,17 +73,37 @@
   <g
      inkscape:groupmode="layer"
      id="layer2"
-     inkscape:label="Ebene 2"
-     transform="translate(-58.640404,-81.817032)">
+     inkscape:label="Ebene 4">
     <rect
-       style="opacity:1;fill:none;fill-opacity:1;stroke-width:0.31577146"
-       id="rect6645"
-       width="107.48355"
-       height="107.48355"
-       x="58.640404"
-       y="81.817032"
-       inkscape:export-xdpi="241.98679"
-       inkscape:export-ydpi="241.98679" />
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke-width:0.27794558"
+       id="rect243"
+       width="95.308037"
+       height="95.308037"
+       x="6.2366071"
+       y="6.1788812" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer3"
+     inkscape:label="Ebene 3"
+     style="display:none">
+    <rect
+       style="opacity:1;fill:none;fill-opacity:1;stroke-width:0.24616167"
+       id="rect21"
+       width="100"
+       height="100"
+       x="3.5907736"
+       y="3.5148022"
+       inkscape:export-xdpi="45.720001"
+       inkscape:export-ydpi="45.720001" />
+    <rect
+       style="opacity:1;fill:#f2f2f2;fill-opacity:1;stroke-width:0.23111598"
+       id="rect3505"
+       width="85.021408"
+       height="89.744301"
+       x="2.0015929"
+       y="-106.85056"
+       transform="matrix(-0.18087732,0.98350567,-0.99046641,-0.13775449,0,0)" />
   </g>
   <g
      inkscape:label="Ebene 1"
