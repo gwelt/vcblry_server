@@ -1,4 +1,4 @@
-![vcblry icon](public/vcblry96.png)
+![vcblry icon](public/vcblry180.png)
 # vocabulary database and trainer for mobiles
   
 This is a server for vocabulary-sets and an online vocabulary-trainer.  
