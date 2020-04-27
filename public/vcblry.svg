@@ -17,9 +17,15 @@
    id="svg8"
    inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)"
    sodipodi:docname="vcblry.svg"
+<<<<<<< HEAD
    inkscape:export-filename="/home/sven/vcblry/public/vcblry180.png"
    inkscape:export-xdpi="42.540001"
    inkscape:export-ydpi="42.540001">
+=======
+   inkscape:export-filename="/home/sven/vcblry/public/favicon.ico.png"
+   inkscape:export-xdpi="22.690001"
+   inkscape:export-ydpi="22.690001">
+>>>>>>> 3a650f245d64a3c7623def4d7c8377ee15076bcc
   <defs
      id="defs2">
     <linearGradient
@@ -49,9 +55,13 @@
      inkscape:pageshadow="2"
      inkscape:zoom="1.4"
      inkscape:cx="222.6341"
+<<<<<<< HEAD
      inkscape:cy="190.6195"
+=======
+     inkscape:cy="219.19093"
+>>>>>>> 3a650f245d64a3c7623def4d7c8377ee15076bcc
      inkscape:document-units="mm"
-     inkscape:current-layer="layer2"
+     inkscape:current-layer="layer3"
      showgrid="false"
      inkscape:window-width="1600"
      inkscape:window-height="852"
@@ -72,6 +82,7 @@
   </metadata>
   <g
      inkscape:groupmode="layer"
+<<<<<<< HEAD
      id="layer2"
      inkscape:label="Ebene 4">
     <rect
@@ -87,6 +98,11 @@
      id="layer3"
      inkscape:label="Ebene 3"
      style="display:none">
+=======
+     id="layer3"
+     inkscape:label="Ebene 3"
+     style="display:inline">
+>>>>>>> 3a650f245d64a3c7623def4d7c8377ee15076bcc
     <rect
        style="opacity:1;fill:none;fill-opacity:1;stroke-width:0.24616167"
        id="rect21"
