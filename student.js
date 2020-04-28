@@ -303,7 +303,7 @@ function show_result() {
 	res+='<div style=font-size:3rem>'+percentage+'%</div>';
 	let stars=''; 
 	let i=0; while (i<5) {i++; stars+='<div class="star '+(percentage>=i*20?'star1':(percentage-(i*20)>=-10?'star2':'star3'))+'"></div>';}
-	res+='<div style="margin:1rem auto 0 auto;width:50%;display:flex;min-height:1.5rem">'+stars+'</div>';
+	res+='<div style="margin:0.5rem auto 0 auto;width:50%;display:flex;min-height:1.5rem">'+stars+'</div>';
 	//res+='<div style=font-size:0.8rem>'+challenge.wrong_answers.length+' Fehler</div><p>';
 	res+='</div>';
 	e.innerHTML=res;
