@@ -226,7 +226,7 @@ function show_stats(s) {
 	while (s.assist-s.error>0) {s.assist--;	e.appendChild(newDOT('assist'));}
 	while (s.error>0) {s.error--; e.appendChild(newDOT('error'));}
 	if (e.lastchild) {e.lastChild.classList.add('last')};
-	e.onclick=()=>{if (currentChallenge.id!=0) {show_start()} else {confirm('Do you want to quit?')?show_start():undefined}};
+	e.onclick=()=>{if ((currentChallenge.id!=0)||(listOfChallenges.length<1)) {show_start()} else {confirm('Do you want to quit?')?show_start():undefined}};
 	function newDOT(cl) {let d=document.createElement('div'); d.classList.add('dot',cl); return d;}
 }
 
