@@ -15,7 +15,7 @@ function Configuration() {
 	this.mc_count = 3; // number of options shown with multiple-choice (min 3, max 8, default 3) (will also apply for check if mode is not mc)
 	this.rrand = true; // ask in random order (own language<>foreign language)
 	this.reverse = false; // always ask in reverse order (own language<>foreign language)
-	this.delay_ok = 250; // delay if selected the correct answer, before switching to next question
+	this.delay_ok = 650; // delay if selected the correct answer, before switching to next question
 	this.delay_error = 0; // delay if selected the wrong answer, before showing the correct answer
 }
 
@@ -87,8 +87,8 @@ function show_start(list,mc,mc_count,rrand,reverse,delay_ok,delay_error) {
 	let s=document.getElementById('stats');
 	s.innerHTML='';
 	let e=document.getElementById('main');
-	e.innerHTML='';//'<div class=label><span style=font-weight:bold>VCBLRY*</span> input</div>';
-	let advanced_options=' <a href=# onclick="ta.hidden=!ta.hidden">edit</a> | <a href=# onclick=open_upload_dialog()>import</a>';
+	e.innerHTML='';
+	let advanced_options='<span style=float:right><a href=# onclick="ta.hidden=!ta.hidden">edit</a> | <a href=# onclick=open_upload_dialog()>import</a></span>';
 	e.innerHTML+='<div class=label><span style=font-weight:bold>VCBLRY*</span> trainer &nbsp; '+advanced_options+'</div>';
 	e.innerHTML+='<input id=import hidden type=file accept="application/json,text/plain" onchange="openFile(event,'+((v)=>{if (v.length<=5000) {ta.value=v;updateVocabularyList();} else {alert('File must not exceed 5000 characters.')}})+')">';
 	let vl=document.createElement('div');
@@ -252,7 +252,7 @@ function show_question(q,is_started,is_assist) {
 					newBUTTON(e,btn_list,cl,q.B_list[i],function(){show_question()});
 				}
 			} else {				
-				newBUTTON(e,btn_list,cl,q.B_list[i],function(){answer(this,btn_list)},new Word(q.A,q.B_list[i]));
+				newBUTTON(e,btn_list,cl,is_started?scramble(q.B_list[i]):q.B_list[i],function(){answer(this,btn_list)},new Word(q.A,q.B_list[i]));
 			}
 			i++;
 		}
@@ -260,6 +260,14 @@ function show_question(q,is_started,is_assist) {
 		newBUTTON(e,[],'optionHELP','?',function(){show_question(q,true,true)});
 		newBUTTON(e,[],'optionOK','ok',function(){show_question(q,true)});
 	}
+}
+function scramble(word) {
+	return word;
+	//
+	let w=word.split('').map((c)=>{
+		return (Math.random()-0.5>0)?c:'_';
+	}).join('');
+	return '<span onmouseover="this.innerHTML=\''+word+'\'" onmouseout="this.innerHTML=\''+w+'\'">'+w+'</span>';
 }
 
 function answer(btn,btn_list) {
@@ -269,12 +277,13 @@ function answer(btn,btn_list) {
 	});
 	if (server_check(btn.answer)) {
 		btn.classList='word wordB_ok';
+		btn.innerHTML=btn.answer.B;
 		setTimeout(function(){show_question()},config.delay_ok);
 	} else {
 		btn.classList='word wordB_error';
 		let l = server_lookup(btn.answer.A);
 		btn_list.forEach(function(b){
-			if ((b.answer.B==l.B)||(b.answer.B==l.A)) {setTimeout(function(){b.classList='word wordB';b.onclick=function(){show_question()};},config.delay_error)}
+			if ((b.answer.B==l.B)||(b.answer.B==l.A)) {setTimeout(function(){b.innerHTML=(b.answer.B==l.B)?l.B:l.A; b.classList='word wordB';b.onclick=function(){show_question()};},config.delay_error)}
 		});
 	}
 	show_stats();
@@ -292,7 +301,7 @@ function show_result() {
 	res+='<div style=font-size:3rem>'+percentage+'%</div>';
 	let stars=''; 
 	let i=0; while (i<5) {i++; stars+='<div class="star '+(percentage>=i*20?'star1':(percentage-(i*20)>=-10?'star2':'star3'))+'"></div>';}
-	res+='<div style="margin:1rem auto 1rem auto;width:40%;display:flex;min-height:1.6rem">'+stars+'</div>';
+	res+='<div style="margin:1rem auto 0 auto;width:50%;display:flex;min-height:1.5rem">'+stars+'</div>';
 	//res+='<div style=font-size:0.8rem>'+challenge.wrong_answers.length+' Fehler</div><p>';
 	res+='</div>';
 	e.innerHTML=res;
