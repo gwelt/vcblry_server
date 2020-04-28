@@ -88,7 +88,7 @@ function show_start(list,mc,mc_count,rrand,reverse,delay_ok,delay_error) {
 	s.innerHTML='';
 	let e=document.getElementById('main');
 	e.innerHTML='';
-	let advanced_options='<span style=float:right><a href=# onclick="ta.hidden=!ta.hidden">edit</a> | <a href=# onclick=open_upload_dialog()>import</a></span>';
+	let advanced_options='<span style=float:right><span class=afake onclick="ta.hidden=!ta.hidden">edit</span> | <span class=afake onclick=open_upload_dialog()>import</span></span>';
 	e.innerHTML+='<div class=label><span style=font-weight:bold>VCBLRY*</span> trainer &nbsp; '+advanced_options+'</div>';
 	e.innerHTML+='<input id=import hidden type=file accept="application/json,text/plain" onchange="openFile(event,'+((v)=>{if (v.length<=5000) {ta.value=v;updateVocabularyList();} else {alert('File must not exceed 5000 characters.')}})+')">';
 	let vl=document.createElement('div');
