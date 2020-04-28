@@ -33,23 +33,25 @@
 		.stats {display:flex; margin:1rem 0 0.4rem 0; cursor:pointer;}
 		.main {text-align:center;}
 		.results {font-size:1.2rem; text-align:center; margin:2rem 0;}
-		.dot {height:2.2rem; margin:0.5rem 1px 0 0; border-radius:0rem; background-color:#E0E0E0;}
+		.dot {height:2.2rem; margin:0.5rem 1px 0 0; border-radius:0rem; background-color:#F0F0F0;}
 		.ok {background-color:#00DD00;}
 		.assist {background-color:#F0A000;}
 		.error {background-color:#DD0000;}
-		.last {margin-right:0;}
+		.first {margin-left:0; border-radius: 0.4rem 0 0 0.4rem;}
+		.last {margin-right:0; border-radius: 0 0.4rem 0.4rem 0;}
 
-		.word {transition:0.1s; font-size:1.4rem; outline-width: 0; padding:0.4rem 0.4rem; margin:0.4rem 0rem;}
+		.word {transition:0.25s; font-size:1.4rem; outline-width: 0; padding:0.4rem 0.4rem; margin:0.4rem 0rem;}
 		.btn {border: 2px solid #0078D4;background-color:#0078D4;color:#FFF;cursor:pointer;}
 		.btn_mini_on {transition:0.2s; font-size:1rem; width:33%; border: 2px solid #505050;background-color:#505050;color:#FFF;cursor:pointer;}
 		.btn_mini_off {transition:0s; font-size:1rem; width:33%; border: 2px solid #F0F0F0;background-color:#F0F0F0;color:#AAA;cursor:pointer;}
 		.btn_check {border: 2px solid #F0A000;background-color:#F0A000;color:#FFF;cursor:pointer;}
 		.wordA {border: 2px solid #F0F0F0;background-color:#F0F0F0;color:#000; padding:0.8rem 0.4rem; margin:0.5rem 0rem 0.5rem 0; border-radius: 0}
 		.wordB {border: 2px solid #0078D4;background-color:#0078D4;color:#FFF;cursor:pointer;}
-		.wordB_disabled {border: 2px solid #E0E0E0;background-color:#E0E0E0;color:#FFF;}
+		.wordB_disabled {border: 2px solid #F0F0F0;background-color:#F0F0F0;color:#E0E0E0;}
 		.wordB_assist {border: 2px solid #F0A000;background-color:#F0A000;color:#FFF;cursor:pointer;}
 		.wordB_ok {border: 2px solid #00DD00;background-color:#00DD00;color:#FFF;cursor:pointer;}
 		.wordB_error {border: 2px solid #DD0000;background-color:#DD0000;color:#FFF; text-decoration:line-through}
+		.scrambled {opacity:0.4;color:#000000;background-color:#000000;margin-right:2px}
 
 		.optionOK {border: 2px solid #0078D4;background-color:#0078D4;color:#FFF;cursor:pointer; width:72%; float:right;}
 		.optionHELP {border: 2px solid #F0A000;background-color:#F0A000;color:#FFF;cursor:pointer; width:25%; float:left;}
