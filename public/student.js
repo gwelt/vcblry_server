@@ -11,11 +11,11 @@ function server_get_challenge() {let r=currentChallenge.get_challenge(); return 
 var config = new Configuration();
 function Configuration() {
 	this.list = '';
-	this.mc = false; // mode: multiple-choice
+	this.mc = true; // mode: multiple-choice
 	this.mc_count = 3; // number of options shown with multiple-choice (min 3, max 8, default 3) (will also apply for check if mode is not mc)
 	this.rrand = true; // ask in random order (own language<>foreign language)
 	this.reverse = false; // always ask in reverse order (own language<>foreign language)
-	this.delay_ok = 650; // delay if selected the correct answer, before switching to next question
+	this.delay_ok = 750; // delay if selected the correct answer, before switching to next question
 	this.delay_error = 0; // delay if selected the wrong answer, before showing the correct answer
 }
 
@@ -163,6 +163,8 @@ function show_start(list,mc,mc_count,rrand,reverse,delay_ok,delay_error) {
 
 	e.appendChild(vl);
 	updateVocabularyList();
+
+	document.body.scrollTop=0;document.documentElement.scrollTop=0;
 }
 function updateVocabularyList() {vl.innerHTML=createVocabularyList(JSON.parse(TXTtoJSON(ta.value,true)))}
 function createVocabularyList(list,highlight_list) {
@@ -225,8 +227,9 @@ function show_stats(s) {
 	while (s.todo>0) {s.todo--;	e.appendChild(newDOT());}
 	while (s.assist-s.error>0) {s.assist--;	e.appendChild(newDOT('assist'));}
 	while (s.error>0) {s.error--; e.appendChild(newDOT('error'));}
-	if (e.lastchild) {e.lastChild.classList.add('last')};
 	e.onclick=()=>{if ((currentChallenge.id!=0)||(listOfChallenges.length<1)) {show_start()} else {confirm('Do you want to quit?')?show_start():undefined}};
+	try {e.firstChild.classList.add('first')} catch {};
+	try {e.lastChild.classList.add('last')} catch {};
 	function newDOT(cl) {let d=document.createElement('div'); d.classList.add('dot',cl); return d;}
 }
 
@@ -262,12 +265,11 @@ function show_question(q,is_started,is_assist) {
 	}
 }
 function scramble(word) {
-	return word;
-	//
+	//return word;
 	let w=word.split('').map((c)=>{
-		return (Math.random()-0.5>0)?c:'_';
+		return (Math.random()-0.5>0)?c:'<span class=scrambled>'+c+'</span>';
 	}).join('');
-	return '<span onmouseover="this.innerHTML=\''+word+'\'" onmouseout="this.innerHTML=\''+w+'\'">'+w+'</span>';
+	return w;//'<span onmouseover="this.innerHTML=\''+word+'\'" onmouseout="this.innerHTML=\''+w+'\'">'+w+'</span>';
 }
 
 function answer(btn,btn_list) {
