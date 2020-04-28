@@ -90,6 +90,15 @@ Challenge.prototype.lookup = function (A) {
 	return JSON.stringify(word);
 }
 
+function shuffle_list(array) {
+	for (let i = array.length - 1; i > 0; i--) {
+		let j = Math.floor(Math.random() * (i + 1));
+		[array[i], array[j]] = [array[j], array[i]];
+	}
+	return array;
+}
+/*
 function shuffle_list(list) {
 	return list.sort(function() {return Math.random() - 0.5});
 }
+*/
