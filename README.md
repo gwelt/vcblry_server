@@ -13,11 +13,11 @@ To run the server, run:
 ```
 npm start
 ```
-To open the VCBLRY* in the browser:
+To open VCBLRY* in the browser:
 ```
 open http://localhost:3000
 ```
-Don't miss the Swagger UI interface:
+Don't miss the Swagger UI:
 ```
 open http://localhost:3000/docs
 ```
