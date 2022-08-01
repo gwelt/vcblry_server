@@ -8,13 +8,11 @@
     "start": "node index.js"
   },
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/gwelt/vcblry.git"
+    "type": "git",
+    "url": "https://github.com/gwelt/vcblry.git"
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "connect": "^3.2.0",
-    "js-yaml": "^3.3.0",
-    "oas3-tools": "^2.0.2"
+    "express": "^4.18.1"
   }
 }
